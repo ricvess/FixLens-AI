@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f8f5" />
+  <meta name="description" content="FixLens AI helps you understand household problems from a photo and find safe, practical next steps." />
+
+  <!-- Security: Content-Security-Policy. Keep in sync with the CDNs / Supabase project used by script.js. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://uytbxmdifvooxwqewkqw.supabase.co; connect-src 'self' https://uytbxmdifvooxwqewkqw.supabase.co https://cdn.jsdelivr.net; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!-- Runs before first paint: applies the saved theme and flags a stored login session -->
+  <script src="theme-init.js"></script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" href="assets/favicon.ico" sizes="48x48" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <title>FixLens AI | Fix it smarter.</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FixLens AI | Fix it smarter." />
+  <meta property="og:description" content="Take a photo, understand what might be wrong, and get safe, practical next steps with FixLens AI." />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <noscript><p>FixLens AI needs JavaScript to run. Please enable it in your browser.</p></noscript>
+  <div class="site-shell" id="top">
+    <header class="topbar" id="landing-topbar">
+      <a class="brand" href="#top" aria-label="FixLens AI home" data-home-link>
+        <img class="brand-logo-img logo-light-mode" src="assets/logo-header-light.svg" width="152" height="40" alt="FixLens AI" />
+        <img class="brand-logo-img logo-dark-mode" src="assets/logo-header-dark.svg" width="152" height="40" alt="FixLens AI" />
+      </a>
+      <nav class="landing-nav" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#categories">Categories</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <!-- Language Switcher Toggle -->
+        <button class="lang-toggle-btn" id="lang-toggle-landing" type="button" aria-label="Ganti bahasa / Switch language" title="Switch language">
+          <span class="lang-flag">🇮🇩</span>
+          <span class="lang-text">ID</span>
+        </button>
+        <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" title="Switch theme">
+          <i data-lucide="moon"></i>
+        </button>
+        <button class="button button-quiet" type="button" data-open-auth="login" data-i18n="nav_login">Log in</button>
+        <button class="button button-primary button-small" type="button" data-open-auth="signup" data-i18n="nav_get_started">Get started <i data-lucide="arrow-up-right"></i></button>
+      </div>
+    </header>
+
+    <!-- Offline banner -->
+    <div class="offline-banner hidden" id="offline-banner" role="alert" aria-live="assertive">
+      <i data-lucide="wifi-off"></i>
+      <span>No internet connection. Some features may not work.</span>
+    </div>
+
+    <main>
+      <!-- LANDING PAGE -->
+      <section class="landing-page" id="landing-page">
+        <section class="hero section-wrap">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR EVERYDAY HOME ASSISTANT</div>
+            <h1>Something broken?<br /><span>Let's figure it out.</span></h1>
+            <p class="hero-description">Take a photo, understand what might be wrong, and discover the next steps with FixLens AI.</p>
+            <div class="hero-actions">
+              <button class="button button-primary button-large" type="button" data-open-auth="signup">Start with a photo <i data-lucide="arrow-up-right"></i></button>
+              <a class="button button-outline button-large" href="#how-it-works">See how it works <i data-lucide="play"></i></a>
+            </div>
+            <div class="hero-proof">
+              <span class="proof-icon"><i data-lucide="shield-check"></i></span>
+              <span>Practical guidance. Safety comes first.</span>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-glow"></div>
+            <div class="hero-card">
+              <div class="hero-card-top">
+                <div><span class="tiny-label">FIXLENS AI SCANNER</span><strong>Problem overview</strong></div>
+                <span class="live-indicator"><span></span> Ready to scan</span>
+              </div>
+              <div class="demo-photo">
+                <svg viewBox="0 0 400 235" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of a kitchen faucet with a small leak">
+                  <defs>
+                    <linearGradient id="demo-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4eee4"/><stop offset="1" stop-color="#cfe0d1"/></linearGradient>
+                    <linearGradient id="demo-metal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2d5f54"/><stop offset=".5" stop-color="#3f7a6b"/><stop offset="1" stop-color="#1f4a40"/></linearGradient>
+                  </defs>
+                  <rect width="400" height="235" fill="url(#demo-bg)"/>
+                  <path d="M0 60H400M0 120H400M80 0V150M160 0V150M240 0V150M320 0V150" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>
+                  <rect y="165" width="400" height="70" fill="#b6cdb9"/>
+                  <rect x="110" y="158" width="180" height="22" rx="11" fill="#9fbba4"/>
+                  <ellipse cx="200" cy="170" rx="76" ry="9" fill="#7ea589"/>
+                  <rect x="185" y="92" width="30" height="72" rx="9" fill="url(#demo-metal)"/>
+                  <path d="M200 100V78Q200 54 226 54H258Q284 54 284 80V104" fill="none" stroke="url(#demo-metal)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="274" y="100" width="20" height="14" rx="4" fill="#173d34"/>
+                  <rect x="178" y="40" width="44" height="12" rx="6" fill="#173d34"/>
+                  <path d="M208 62H230" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round" fill="none"/>
+                  <path class="drip drip-1" d="M284 122c-5 9-5 15 0 15s5-6 0-15z" fill="#6aa7d6"/>
+                  <path class="drip drip-2" d="M284 122c-5 9-5 15 0 15s5-6 0-15z" fill="#6aa7d6"/>
+                  <ellipse cx="284" cy="171" rx="16" ry="4" fill="#6aa7d6" opacity=".55"/>
+                </svg>
+                <span class="scan-corner corner-tl"></span><span class="scan-corner corner-tr"></span>
+                <span class="scan-corner corner-bl"></span><span class="scan-corner corner-br"></span>
+                <div class="scan-label"><i data-lucide="scan"></i> Example scan</div>
+              </div>
+              <div class="demo-result">
+                <div class="demo-result-icon"><i data-lucide="droplets"></i></div>
+                <div class="demo-result-copy"><span class="tiny-label">POSSIBLE ISSUE</span><strong>Water leakage</strong><span>Kitchen faucet · Example result</span></div>
+                <span class="status-pill status-medium">Check needed</span>
+              </div>
+              <div class="demo-progress"><span></span></div>
+              <div class="demo-foot"><span><i data-lucide="sparkles"></i> AI-assisted insights</span><span>Illustrative preview</span></div>
+            </div>
+            <div class="floating-note floating-note-one"><span class="floating-icon green"><i data-lucide="lightbulb"></i></span><span><strong>Understand the issue</strong><small>Clear explanations</small></span></div>
+            <div class="floating-note floating-note-two"><span class="floating-icon blue"><i data-lucide="list-checks"></i></span><span><strong>Know what to do</strong><small>Guided next steps</small></span></div>
+          </div>
+        </section>
+
+        <section class="trust-strip section-wrap">
+          <span>MADE FOR EVERYDAY HOUSEHOLD PROBLEMS</span>
+          <div class="trust-items"><span><i data-lucide="camera"></i> Photo-based</span><span><i data-lucide="brain-circuit"></i> AI-assisted</span><span><i data-lucide="shield-check"></i> Safety-aware</span></div>
+        </section>
+
+        <section class="section-wrap content-section" id="how-it-works">
+          <div class="section-heading">
+            <span class="eyebrow">A SIMPLE PROCESS</span>
+            <h2>From a photo to a<br /><span>clearer next step.</span></h2>
+            <p>FixLens AI helps you understand what you are seeing before deciding what to do next.</p>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card"><span class="step-number">01</span><div class="step-icon"><i data-lucide="camera"></i></div><h3>Take a photo</h3><p>Upload a clear photo of the item or area you want to check.</p></article>
+            <article class="step-card"><span class="step-number">02</span><div class="step-icon"><i data-lucide="scan-search"></i></div><h3>Let AI examine it</h3><p>AI reviews visible details and looks for possible issues.</p></article>
+            <article class="step-card"><span class="step-number">03</span><div class="step-icon"><i data-lucide="clipboard-check"></i></div><h3>Review your guide</h3><p>Explore possible causes, safe checks, and recommended next steps.</p></article>
+          </div>
+        </section>
+
+        <section class="categories-section" id="categories">
+          <div class="section-wrap content-section">
+            <div class="section-heading heading-row">
+              <div><span class="eyebrow">WHAT CAN YOU CHECK?</span><h2>Everyday items.<br /><span>One helpful place.</span></h2></div>
+              <p>Start with common household items. FixLens AI will tell you when an image does not provide enough information.</p>
+            </div>
+            <div class="category-grid">
+              <a class="category-card" href="#scanner" data-category="Electronics"><div class="category-art category-electronics"><i data-lucide="tv"></i></div><div><h3>Electronics</h3><p>Fans, TVs, fridges, blenders</p></div><i class="category-arrow" data-lucide="arrow-up-right"></i></a>
+              <a class="category-card" href="#scanner" data-category="Kitchen &amp; plumbing"><div class="category-art category-kitchen"><i data-lucide="faucet"></i></div><div><h3>Kitchen &amp; plumbing</h3><p>Faucets, sinks, stoves</p></div><i class="category-arrow" data-lucide="arrow-up-right"></i></a>
+              <a class="category-card" href="#scanner" data-category="Furniture"><div class="category-art category-furniture"><i data-lucide="armchair"></i></div><div><h3>Furniture</h3><p>Tables, chairs, cabinets</p></div><i class="category-arrow" data-lucide="arrow-up-right"></i></a>
+              <a class="category-card" href="#scanner" data-category="Home structure"><div class="category-art category-structure"><i data-lucide="house"></i></div><div><h3>Home structure</h3><p>Walls, doors, floors, windows</p></div><i class="category-arrow" data-lucide="arrow-up-right"></i></a>
+              <a class="category-card" href="#scanner" data-category="Other household items"><div class="category-art category-other"><i data-lucide="package"></i></div><div><h3>Other household items</h3><p>Irons, vacuums, dispensers</p></div><i class="category-arrow" data-lucide="arrow-up-right"></i></a>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-wrap content-section about-section" id="about">
+          <div class="about-visual">
+            <div class="about-orbit orbit-one"></div>
+            <div class="about-orbit orbit-two"></div>
+            <div class="about-center">
+              <img class="about-hero-logo logo-light-mode" src="assets/logo-icon-light.svg" width="74" height="74" alt="FixLens AI logo" /><img class="about-hero-logo logo-dark-mode" src="assets/logo-icon-dark.svg" width="74" height="74" alt="FixLens AI logo" />
+              <strong>FixLens <span class="brand-ai">AI</span></strong>
+              <small>FIX IT SMARTER.</small>
+            </div><span class="orbit-chip chip-one"><i data-lucide="camera"></i></span><span class="orbit-chip chip-two"><i data-lucide="brain-circuit"></i></span><span class="orbit-chip chip-three"><i data-lucide="shield-check"></i></span></div>
+          <div class="about-copy"><span class="eyebrow">ABOUT FIXLENS AI</span><h2>Make the next step<br /><span>easier to understand.</span></h2><p>Household problems can be confusing. FixLens AI turns a photo into an organized explanation, so you can better understand what may be happening and when to ask a professional for help.</p><div class="about-points"><span><i data-lucide="check-circle-2"></i> Clear, structured explanations</span><span><i data-lucide="check-circle-2"></i> Practical and safety-aware guidance</span><span><i data-lucide="check-circle-2"></i> Your diagnosis history in one place</span></div><button class="button button-primary" type="button" data-open-auth="signup">Explore FixLens AI <i data-lucide="arrow-up-right"></i></button></div>
+        </section>
+
+        <section class="section-wrap final-cta"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Let's understand<br />what's going on.</h2><p>Sign in to start your first household scan.</p></div><button class="button button-light button-large" type="button" data-open-auth="signup">Get started <i data-lucide="arrow-up-right"></i></button></section>
+      </section>
+
+      <!-- AUTHENTICATION -->
+      <section class="auth-page hidden" id="auth-page">
+        <div class="auth-backdrop"></div>
+        <div class="auth-card">
+          <button class="auth-back" type="button" data-back-home><i data-lucide="arrow-left"></i> Back to home</button>
+          <!-- Auth Brand Logo -->
+          <a class="brand auth-brand" href="#" data-home-link>
+        <img class="brand-logo-img logo-light-mode" src="assets/logo-header-light.svg" width="152" height="40" alt="FixLens AI" />
+        <img class="brand-logo-img logo-dark-mode" src="assets/logo-header-dark.svg" width="152" height="40" alt="FixLens AI" />
+      </a>
+          <div class="auth-heading"><span class="eyebrow">YOUR HOUSEHOLD ASSISTANT</span><h1 id="auth-title">Welcome back.</h1><p id="auth-subtitle">Sign in to continue to your workspace.</p></div>
+          <form id="auth-form" class="auth-form" novalidate>
+            <label id="name-field" class="form-field hidden"><span>Full name</span><div class="input-wrap"><i data-lucide="user"></i><input id="auth-name" type="text" autocomplete="name" placeholder="Your name" /></div></label>
+            <label class="form-field"><span>Email address</span><div class="input-wrap"><i data-lucide="mail"></i><input id="auth-email" type="email" autocomplete="email" placeholder="you@example.com" required /></div></label>
+            <label class="form-field"><span>Password</span><div class="input-wrap"><i data-lucide="lock"></i><input id="auth-password" type="password" autocomplete="current-password" placeholder="At least 8 characters" minlength="8" required /><button class="password-toggle" type="button" aria-label="Show password"><i data-lucide="eye"></i></button></div></label>
+            <div class="auth-message hidden" id="auth-message" role="alert" aria-live="assertive"></div>
+            <button class="button button-primary button-full button-large" id="auth-submit" type="submit">Log in <i data-lucide="arrow-right"></i></button>
+          </form>
+          <p class="auth-switch" id="auth-switch">New to FixLens AI? <button type="button" data-switch-auth="signup">Create an account</button></p>
+          <!-- Forgot password link (BUG 7 fix) -->
+          <p class="auth-forgot" id="auth-forgot"><button type="button" id="forgot-password-btn">Forgot your password?</button></p>
+          <p class="auth-legal">By continuing, you agree to use FixLens AI responsibly. AI results are estimates, not professional inspections.</p>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section class="dashboard hidden" id="dashboard">
+        <aside class="sidebar" id="sidebar">
+          <a class="brand sidebar-brand" href="#" data-dashboard-view="overview">
+        <img class="brand-logo-img logo-light-mode" src="assets/logo-header-light.svg" width="152" height="40" alt="FixLens AI" />
+        <img class="brand-logo-img logo-dark-mode" src="assets/logo-header-dark.svg" width="152" height="40" alt="FixLens AI" />
+      </a>
+          <div class="sidebar-label">WORKSPACE</div>
+          <nav class="sidebar-nav">
+            <button class="side-link active" type="button" data-dashboard-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
+            <button class="side-link" type="button" data-dashboard-view="scanner"><i data-lucide="scan-line"></i><span>AI Scanner</span><span class="side-new">NEW</span></button>
+            <button class="side-link" type="button" data-dashboard-view="history"><i data-lucide="history"></i><span>Scan history</span></button>
+          </nav>
+          <div class="sidebar-bottom">
+            <div class="sidebar-help"><span class="help-icon"><i data-lucide="life-buoy"></i></span><strong>Need a hand?</strong><p>Check our safety-first tips before attempting a repair.</p><button type="button" data-dashboard-view="safety">Safety guidelines <i data-lucide="arrow-up-right"></i></button></div>
+            <button class="side-link" type="button" data-dashboard-view="about"><i data-lucide="info"></i><span>About FixLens AI</span></button>
+            <div class="sidebar-user"><div class="avatar" id="sidebar-avatar">U</div><div class="sidebar-user-info"><strong id="sidebar-user-name">User</strong><span id="sidebar-user-email">user@example.com</span></div><button class="icon-button logout-button" type="button" id="logout-button" title="Log out" aria-label="Log out"><i data-lucide="log-out"></i></button></div>
+          </div>
+        </aside>
+
+        <div class="dashboard-main">
+          <header class="dashboard-topbar">
+            <button class="icon-button mobile-menu-button" id="mobile-menu-button" type="button" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false"><i data-lucide="menu"></i></button>
+            <div class="breadcrumb"><span>Workspace</span><i data-lucide="chevron-right"></i><strong id="breadcrumb-current">Overview</strong></div>
+            <div class="dashboard-top-actions">
+              <span class="topbar-date" id="current-date"></span>
+              <button class="lang-toggle-btn" id="lang-toggle-dashboard" type="button" aria-label="Switch language" title="Switch language">
+                <span class="lang-flag">🇮🇩</span>
+                <span class="lang-text">ID</span>
+              </button>
+              <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme"><i data-lucide="moon"></i></button>
+              <div class="avatar avatar-small" id="top-avatar">U</div>
+            </div>
+          </header>
+
+          <div class="dashboard-content">
+            <section class="dashboard-view active" id="view-overview">
+              <div class="welcome-row"><div><span class="eyebrow">YOUR HOME WORKSPACE</span><h1>Good to see you, <span id="welcome-name">there</span>.</h1><p>What would you like to check today?</p></div><button class="button button-primary" type="button" data-dashboard-view="scanner"><i data-lucide="plus"></i> New scan</button></div>
+              <div class="dashboard-hero">
+                <div class="dashboard-hero-copy"><span class="hero-mini-label"><i data-lucide="sparkles"></i> YOUR AI-POWERED ASSISTANT</span><h2>Not sure what's<br />wrong with something?</h2><p>Upload a photo and get a clearer picture of the possible issue and what to do next.</p><button class="button button-light" type="button" data-dashboard-view="scanner">Start a scan <i data-lucide="arrow-up-right"></i></button></div>
+                <div class="dashboard-hero-art"><div class="art-circle circle-a"></div><div class="art-circle circle-b"></div><div class="art-scan-card"><i data-lucide="scan-search"></i><span>IMAGE ANALYSIS</span><strong>Ready when<br />you are.</strong><div class="art-scan-line"></div></div><span class="art-spark spark-a">✳</span><span class="art-spark spark-b">✦</span></div>
+              </div>
+              <div class="stats-grid">
+                <article class="stat-card"><div class="stat-top"><span>Total scans</span><span class="stat-icon green-icon"><i data-lucide="scan"></i></span></div><strong id="stat-total">0</strong><small>All your analyses</small></article>
+                <article class="stat-card"><div class="stat-top"><span>Last scan</span><span class="stat-icon blue-icon"><i data-lucide="clock-3"></i></span></div><strong class="stat-date" id="stat-last">—</strong><small>Your most recent check</small></article>
+                <article class="stat-card"><div class="stat-top"><span>Saved results</span><span class="stat-icon yellow-icon"><i data-lucide="bookmark"></i></span></div><strong id="stat-saved">0</strong><small>Results kept for later</small></article>
+              </div>
+              <div class="section-title-row"><div><h2>Recent scans</h2><p>Your latest household checkups.</p></div><button class="text-button" type="button" data-dashboard-view="history">View all <i data-lucide="arrow-right"></i></button></div>
+              <div class="history-list" id="recent-list"><div class="empty-state compact-empty"><span class="empty-icon"><i data-lucide="image-plus"></i></span><strong>No scans yet</strong><p>Your recent diagnoses will appear here.</p><button class="button button-outline" type="button" data-dashboard-view="scanner">Start your first scan</button></div></div>
+            </section>
+
+            <section class="dashboard-view" id="view-scanner">
+              <div class="page-heading"><span class="eyebrow">AI PHOTO SCANNER</span><h1>Let's take a closer look.</h1><p>Upload a photo of the household item or area you want to check.</p></div>
+              <div class="scanner-layout">
+                <div class="scanner-main-card">
+                  <div class="scanner-card-heading"><div><h2>Upload an image</h2><p>Use a clear, well-lit photo for a more useful analysis.</p></div><span class="step-chip">STEP 01</span></div>
+                  <div class="category-picker" role="group" aria-label="Item category (optional)">
+                    <span class="category-picker-label">What are you checking? <small>(optional)</small></span>
+                    <button type="button" class="category-pill" data-pick-category="Electronics" aria-pressed="false">Electronics</button>
+                    <button type="button" class="category-pill" data-pick-category="Kitchen &amp; plumbing" aria-pressed="false">Kitchen &amp; plumbing</button>
+                    <button type="button" class="category-pill" data-pick-category="Furniture" aria-pressed="false">Furniture</button>
+                    <button type="button" class="category-pill" data-pick-category="Home structure" aria-pressed="false">Home structure</button>
+                    <button type="button" class="category-pill" data-pick-category="Other household items" aria-pressed="false">Other</button>
+                  </div>
+                  <div class="upload-zone" id="upload-zone" role="group" aria-label="Upload zone">
+                    <!-- accept images + camera capture hint for mobile -->
+                    <input type="file" id="image-input" accept="image/jpeg,image/png,image/webp" hidden />
+                    
+                    <div class="upload-placeholder" id="upload-placeholder">
+                      <div class="upload-dual-options">
+                        <!-- Tombol Kiri: Kamera -->
+                        <button type="button" class="action-card-btn" id="open-camera-btn">
+                          <div class="action-card-icon camera-icon"><i data-lucide="camera"></i></div>
+                          <div class="action-card-text">
+                            <strong>Take a photo</strong>
+                            <span>Use camera directly</span>
+                          </div>
+                        </button>
+
+                        <div class="dual-option-divider"><span>OR</span></div>
+
+                        <!-- Tombol Kanan: File -->
+                        <button type="button" class="action-card-btn" id="browse-image">
+                          <div class="action-card-icon file-icon"><i data-lucide="folder-open"></i></div>
+                          <div class="action-card-text">
+                            <strong>Upload from file</strong>
+                            <span>Browse gallery / device</span>
+                          </div>
+                        </button>
+                      </div>
+
+                      <div class="drag-drop-hint">
+                        <span>or drag and drop your image anywhere here</span>
+                        <small>JPG, PNG or WEBP · Up to 8 MB</small>
+                      </div>
+                    </div>
+
+                    <div class="image-preview hidden" id="image-preview">
+                      <img id="preview-image" alt="Selected image preview" />
+                      <div class="preview-overlay">
+                        <span id="preview-filename">image.jpg</span>
+                        <div class="preview-overlay-actions">
+                          <button type="button" class="change-image-btn" id="open-camera-btn-retake" title="Retake with camera" aria-label="Retake with camera"><i data-lucide="camera"></i> Camera</button>
+                          <button type="button" class="change-image-btn" id="change-image" title="Change image" aria-label="Change image"><i data-lucide="image"></i> Browse</button>
+                          <button type="button" class="remove-image" id="remove-image" aria-label="Remove image"><i data-lucide="x"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="upload-tips"><span><i data-lucide="sun"></i> Good lighting</span><span><i data-lucide="focus"></i> Focus on the issue</span><span><i data-lucide="image"></i> One item per photo</span></div>
+                  <div class="scanner-divider"></div>
+                  <div class="scanner-actions"><div class="privacy-note"><i data-lucide="lock"></i><span>Your image is used to generate your diagnosis.</span></div><button class="button button-primary button-large" id="analyze-button" type="button" disabled>Analyze image <i data-lucide="arrow-right"></i></button></div>
+                  <div class="scan-progress hidden" id="scan-progress" role="status" aria-live="polite"><div class="spinner"></div><div><strong id="progress-title">Analyzing your image...</strong><span id="progress-subtitle">Looking for visible details. This may take a moment.</span></div></div>
+                  <div class="scanner-error hidden" id="scanner-error" role="alert" aria-live="assertive"></div>
+                </div>
+                <aside class="scanner-side">
+                  <div class="side-info-card"><span class="side-info-icon"><i data-lucide="lightbulb"></i></span><h3>Tips for a useful scan</h3><ul><li>Take the photo in a well-lit area.</li><li>Show the whole item and the affected area.</li><li>Avoid blurry or heavily edited images.</li><li>Add another angle if the issue is hard to see.</li></ul></div>
+                  <div class="side-info-card safety-info"><span class="side-info-icon"><i data-lucide="shield-alert"></i></span><h3>Safety first</h3><p>Do not touch exposed wires, gas leaks, hot surfaces, or unstable structures to take a photo. Keep a safe distance and contact a qualified professional when needed.</p><button class="text-button" type="button" data-dashboard-view="safety">Read safety guidelines <i data-lucide="arrow-right"></i></button></div>
+                </aside>
+              </div>
+              <section class="diagnosis-section hidden" id="diagnosis-section">
+                <div class="diagnosis-heading"><div><span class="eyebrow">YOUR SCAN RESULT</span><h2>Here's what we found.</h2><p>Review the possible issue and recommended next steps.</p></div><button class="button button-outline" type="button" id="new-scan-button"><i data-lucide="plus"></i> New scan</button></div>
+                <div id="diagnosis-result"></div>
+              </section>
+            </section>
+
+            <section class="dashboard-view" id="view-history">
+              <div class="page-heading"><span class="eyebrow">YOUR RECORDS</span><h1>Scan history</h1><p>All your previous household analyses, in one place.</p></div>
+              <div class="history-toolbar"><div class="search-box"><i data-lucide="search"></i><input id="history-search" type="search" placeholder="Search by item, problem or category..." aria-label="Search scan history" /></div><div class="history-toolbar-actions"><button class="button button-outline" type="button" id="export-history-btn"><i data-lucide="download"></i> Export</button><button class="button button-outline" type="button" data-dashboard-view="scanner"><i data-lucide="plus"></i> New scan</button></div></div>
+              <div class="history-filters">
+                <div class="filter-group" role="group" aria-label="Filter by urgency">
+                  <button type="button" class="filter-chip active" data-history-urgency="all" aria-pressed="true">All</button>
+                  <button type="button" class="filter-chip" data-history-urgency="low" aria-pressed="false">Low</button>
+                  <button type="button" class="filter-chip" data-history-urgency="medium" aria-pressed="false">Medium</button>
+                  <button type="button" class="filter-chip" data-history-urgency="high" aria-pressed="false">High</button>
+                  <button type="button" class="filter-chip" data-history-urgency="critical" aria-pressed="false">Critical</button>
+                </div>
+                <div class="filter-tools">
+                  <button type="button" class="filter-chip" id="history-saved-toggle" data-history-saved aria-pressed="false"><i data-lucide="bookmark"></i> Saved</button>
+                  <label class="sort-select"><span class="visually-hidden">Sort scans</span><select id="history-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="urgent">Most urgent first</option></select></label>
+                </div>
+              </div>
+              <p class="history-count" id="history-count" aria-live="polite"></p>
+              <div class="history-list full-history-list" id="history-list"><div class="empty-state"><span class="empty-icon"><i data-lucide="history"></i></span><strong>No scan history yet</strong><p>Your completed scans will show up here.</p></div></div>
+            </section>
+
+            <section class="dashboard-view" id="view-safety">
+              <div class="page-heading"><span class="eyebrow">BEFORE YOU TAKE ACTION</span><h1>Safety comes first.</h1><p>AI guidance can help you understand a problem, but it cannot replace an on-site professional inspection.</p></div>
+              <div class="safety-grid">
+                <article class="safety-card danger"><span class="safety-card-icon"><i data-lucide="zap"></i></span><h2>Electrical issues</h2><p>Stay away from exposed wires, sparks, burning smells, or wet electrical equipment. Do not open electrical appliances or outlets. Contact a qualified electrician.</p></article>
+                <article class="safety-card danger"><span class="safety-card-icon"><i data-lucide="flame"></i></span><h2>Gas and fire risks</h2><p>If you suspect a gas leak, avoid flames and electrical switches. Move away from the area and contact emergency or qualified gas services from a safe location.</p></article>
+                <article class="safety-card warning"><span class="safety-card-icon"><i data-lucide="droplets"></i></span><h2>Water and plumbing</h2><p>Keep water away from electrical equipment. If safe and accessible, use the main water shutoff. Ask a plumber to inspect persistent or hidden leaks.</p></article>
+                <article class="safety-card warning"><span class="safety-card-icon"><i data-lucide="house"></i></span><h2>Structural damage</h2><p>Do not enter areas with sagging ceilings, unstable walls, major cracks, or falling materials. Keep others away and seek a qualified inspection.</p></article>
+              </div>
+              <div class="safety-bottom-note"><i data-lucide="info"></i><p><strong>Remember:</strong> FixLens AI provides image-based estimates. A photo may not reveal hidden faults. Stop if a task feels unsafe and consult a qualified professional.</p></div>
+            </section>
+
+            <section class="dashboard-view" id="view-about">
+              <div class="page-heading"><span class="eyebrow">ABOUT THE PRODUCT</span><h1>Meet FixLens AI</h1><p>Fix it smarter.</p></div>
+              <div class="about-dashboard-card">
+                <img class="about-dashboard-logo-img logo-light-mode" src="assets/logo-icon-light.svg" width="68" height="68" alt="FixLens AI" /><img class="about-dashboard-logo-img logo-dark-mode" src="assets/logo-icon-dark.svg" width="68" height="68" alt="FixLens AI" />
+                <div><h2>Understand everyday problems with a little more clarity.</h2><p>FixLens AI is an AI-assisted household problem guide. It analyzes visible details in an uploaded image and organizes possible issues, causes, and next steps. Its purpose is to help users make more informed decisions, not to provide a certified repair diagnosis.</p></div>
+              </div>
+              <div class="about-values"><article><i data-lucide="eye"></i><h3>Understand</h3><p>Make visible problems easier to describe.</p></article><article><i data-lucide="list-checks"></i><h3>Explore</h3><p>Review practical checks and possible next steps.</p></article><article><i data-lucide="shield-check"></i><h3>Stay safe</h3><p>Know when to stop and contact a professional.</p></article></div>
+            </section>
+          </div>
+        </div>
+        <div class="mobile-sidebar-backdrop hidden" id="sidebar-backdrop"></div>
+      </section>
+    </main>
+
+    <footer class="landing-footer" id="landing-footer">
+      <div class="section-wrap footer-inner">
+        <a class="brand" href="#top">
+        <img class="brand-logo-img logo-light-mode" src="assets/logo-header-light.svg" width="152" height="40" alt="FixLens AI" />
+        <img class="brand-logo-img logo-dark-mode" src="assets/logo-header-dark.svg" width="152" height="40" alt="FixLens AI" />
+      </a>
+        <span>© <span id="footer-year"></span> FixLens AI. Fix it smarter.</span>
+        <a href="#about">About FixLens AI</a>
+      </div>
+    </footer>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+    <!-- Camera capture modal -->
+    <div class="modal-overlay hidden" id="camera-modal" role="dialog" aria-modal="true" aria-labelledby="camera-modal-title">
+      <div class="modal-card camera-modal-card">
+        <button class="modal-close" type="button" id="camera-modal-close" aria-label="Close camera"><i data-lucide="x"></i></button>
+        <div class="camera-modal-header">
+          <h3 id="camera-modal-title"><i data-lucide="camera"></i> Take a Photo</h3>
+          <button type="button" class="icon-button camera-switch-btn" id="camera-switch-btn" title="Switch camera" aria-label="Switch camera">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+        <div class="camera-view-container">
+          <video id="camera-stream" autoplay playsinline muted></video>
+          <div class="camera-grid-guide">
+            <span class="guide-corner c-tl"></span>
+            <span class="guide-corner c-tr"></span>
+            <span class="guide-corner c-bl"></span>
+            <span class="guide-corner c-br"></span>
+          </div>
+          <div class="camera-error-msg hidden" id="camera-error-msg"></div>
+        </div>
+        <div class="camera-actions">
+          <button type="button" class="button button-outline" id="camera-cancel-btn">Cancel</button>
+          <button type="button" class="shutter-button" id="camera-shutter-btn" aria-label="Capture photo">
+            <span class="shutter-ring"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom confirm modal (BUG 6 fix) -->
+    <div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+      <div class="modal-card">
+        <div class="modal-icon"><i data-lucide="trash-2"></i></div>
+        <h3 id="confirm-modal-title">Delete diagnosis?</h3>
+        <p id="confirm-modal-body">This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="button button-outline" type="button" id="confirm-modal-cancel">Cancel</button>
+          <button class="button button-danger" type="button" id="confirm-modal-ok">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forgot password modal (BUG 7 / ADD 1 fix) -->
+    <div class="modal-overlay hidden" id="forgot-modal" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title">
+      <div class="modal-card">
+        <button class="modal-close" type="button" id="forgot-modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+        <div class="modal-icon success-icon"><i data-lucide="key"></i></div>
+        <h3 id="forgot-modal-title">Reset your password</h3>
+        <p>Enter your email address and we'll send you a reset link.</p>
+        <form id="forgot-form" novalidate>
+          <label class="form-field"><span>Email address</span>
+            <div class="input-wrap"><i data-lucide="mail"></i><input id="forgot-email" type="email" autocomplete="email" placeholder="you@example.com" required /></div>
+          </label>
+          <div class="auth-message hidden" id="forgot-message" role="alert" aria-live="assertive"></div>
+          <div class="modal-actions">
+            <button class="button button-outline" type="button" id="forgot-modal-cancel">Cancel</button>
+            <button class="button button-primary" type="submit" id="forgot-submit">Send reset link <i data-lucide="arrow-right"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Set new password modal (opened from the password-reset email link) -->
+    <div class="modal-overlay hidden" id="recovery-modal" role="dialog" aria-modal="true" aria-labelledby="recovery-modal-title">
+      <div class="modal-card">
+        <div class="modal-icon success-icon"><i data-lucide="key-round"></i></div>
+        <h3 id="recovery-modal-title">Set a new password</h3>
+        <p>Choose a new password for your account (at least 8 characters).</p>
+        <form id="recovery-form" novalidate>
+          <label class="form-field"><span>New password</span>
+            <div class="input-wrap"><i data-lucide="lock"></i><input id="recovery-password" type="password" autocomplete="new-password" minlength="8" placeholder="New password" required /></div>
+          </label>
+          <div class="auth-message hidden" id="recovery-message" role="alert" aria-live="assertive"></div>
+          <div class="modal-actions">
+            <button class="button button-primary" type="submit" id="recovery-submit">Update password <i data-lucide="arrow-right"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
